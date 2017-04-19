@@ -11,7 +11,10 @@ from visualize.views import home, get_trajectories
 urlpatterns = [
     # Examples:
     url(r'^$', home),
-    url(r'trajectorydata/$', get_trajectories),
+    url(r'trajectorydata/$', get_trajectories), 
+    # this redirects urls ending with 'trajectorydata' to be handled by the get_trajectories function from views.py
+   
+    
     # url(r'^Compgeo_project/', include('Compgeo_project.Compgeo_project.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
