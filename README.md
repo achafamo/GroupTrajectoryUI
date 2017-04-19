@@ -1,6 +1,6 @@
 # GroupTrajectoryUI
 
-## Quickstart
+## Setup
 
 Clone this repository.
 
