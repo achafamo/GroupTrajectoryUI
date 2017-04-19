@@ -12,7 +12,7 @@ def home(request):
     t = get_template('index2.html')
     html = t.render()
     return HttpResponse(html)
-def weather(request):
+def get_trajectories(request):
     trajectories = get_file("visualize/trajectories.txt")
     return JsonResponse(trajectories)
 # Create your views here.
