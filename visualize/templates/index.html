@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<html>
+<head>
+
+    <title> Vis_Graph</title>
+    <script src="{%static 'js/p5.js' %}"></script>
+    <script src="{%static 'js/trajectories.js' %}"></script>
+    <style>
+            body > div {
+                position: absolute;
+                top: 10;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+        </style>
+
+
+
+</head>
+
+<body>
+    <div id="canvas-center"></div>
+    {{ content }}
+
+</body>
+</html>

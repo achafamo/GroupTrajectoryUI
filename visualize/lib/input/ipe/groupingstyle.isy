@@ -1,0 +1,29 @@
+<ipestyle name="groupingbysize">
+<pen name="groupsize2" value="1"/>
+<pen name="groupsize3" value="5"/>
+<pen name="groupsize4" value="10"/>
+<pen name="groupsize5" value="15"/>
+<pen name="groupsize6" value="19"/>
+<pen name="groupsize7" value="23"/>
+<pen name="groupsize8" value="27"/>
+<pen name="groupsize9" value="29"/>
+<pen name="groupsize10" value="30"/>
+<color name="groupsize2" value="0.933 0.231 0.231"/>
+<color name="groupsize3" value="0.933 0.835 0.718"/>
+<color name="groupsize4" value="0.933 0.788 0"/>
+<color name="groupsize5" value="1 0.549 0"/>
+<color name="groupsize6" value="0.545 0.459 0"/>
+<color name="groupsize7" value="0.35"/>
+<color name="groupsize8" value="0.2"/>
+<color name="groupsize9" value="0.1"/>
+<color name="groupsize10" value="0.1"/>
+<opacity name="groupsize2" value="1"/>
+<opacity name="groupsize3" value="0.9"/>
+<opacity name="groupsize4" value="0.7"/>
+<opacity name="groupsize5" value="0.75"/>
+<opacity name="groupsize6" value="0.8"/>
+<opacity name="groupsize7" value="0.8"/>
+<opacity name="groupsize8" value="0.8"/>
+<opacity name="groupsize9" value="0.8"/>
+<opacity name="groupsize10" value="0.8"/>
+</ipestyle>
