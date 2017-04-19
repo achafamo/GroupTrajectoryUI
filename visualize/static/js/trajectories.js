@@ -4,21 +4,33 @@ var len = 0;
 var new_idx = 0;
 var new_tr = 1;
 var pos = [];
-var num_trajectories = 10;
+var num_trajectories = 10; //can change this number to see more trajectories 
 var new_trajectories = [];
+var grouping_info = [];
+var colors = [];
 
 function preload() {
     var url = getURL() + "/trajectorydata/"; // loads trajectory data from Django backend server
+    var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
+                                                 //belong to which groups(if any) at each time step
+    //TODO: need to incorporate the grouping information to the visualization so that all trajectories within a given group
+    //have the same color or something 
+                    
     trajectories = loadJSON(url); //adding trajectory data into dictionary 
+    group_info = loadJSON(group_url);
+    // group_info should be a list of lists corresponding to each time step. Each list at time t should contain  
+    // a list of the groups at the current time and each group is a list containing the trajectory ids of the grouped trajectories
+    
     len = trajectories.length;
 }
 
 function setup() {
     var canvas = createCanvas(920, 520);
+    //TODO: maybe set the size of the canvas based on the range of the x and y coordinates?
     canvas.parent('canvas-center');
     frameRate(10);
     for (var i = 0; i < num_trajectories; i++) {        
-        boids[i] = new Boid(0, 0);
+        boids[i] = new Boid(0, 0); //boid is the data structure that we will use to represent each trajectory 
         pos[i] = 0;
     }
 }
@@ -33,29 +45,36 @@ function draw() {
 
 function reset() {
     for (var i = 0; i < num_trajectories; i++) {        
-        boids[i] = new Boid(0, 0);
+        boids[i] = new Boid(0, 0); 
         pos[i] = 0;
         idx = 0;
     }
     loop();
 }
-
-
-// Boid class
-function Boid(x, y) {    
-    this.position = createVector(x, y);
-    this.r = 3.0;
-    this.maxspeed = 3;    // Maximum speed
-    
+function initializeColors(){
+    var ln = group_info.length;//we want the maximum number of groups that can occur at any given time.  
+    for(var i; i< ln; i++){
+        //colors[i] = random unique color
+    }
 }
+function groupColor(i){
+    /***
+    takes a given boid and updates its color to correspond to the group that it currently belongs to 
+    ***/
+    var time_step = pos[i];    
+    var curr_groups = group_info[time_step];
+    for(var j = 0; j < curr_groups.length; j++){
+        var group =  curr_groups[j];
+        if(group.indexOf(i)!=-1){
+            if(boids[i].color!= colors[j]){
+                boids[i].color = colors[j];
+            }
+        }
+        //handle case when trajectory left group(not found in any group, set default for solo trajectories
+        //TODO: how to handle the consistency of group order 
+    } 
+    return boids[i].color
 
-Boid.prototype.run = function (boids, i) {
-    if (pos[i] == 149) {        
-        noLoop(); // if last time step, pause loop
-       
-    }    
-    this.update(i);    
-    this.render();    
 }
 
 function keyPressed() {
@@ -68,10 +87,31 @@ function mouseDragged() {
     //so that we can add it and display the added trajectory in the next iteration
     loop();    
     ellipse(mouseX, mouseY, 20, 20); // displays an elipse at the given coordinate everytime the mouse is dragged
-    //noLoop();   
+    //noLoop();       
+}
+
+
+// Boid class
+function Boid(x, y) {    
+    this.position = createVector(x, y);
+    this.r = 3.0;
+    this.maxspeed = 3;    // Maximum speed
+    this.color = ''
     
 }
+
+Boid.prototype.run = function (boids, i) {
+    if (pos[i] == 149) {        
+        noLoop(); // if last time step, pause loop
+       
+    }    
+    this.update(i);    
+    this.render(i);    
+}
+
+
 // Method to update location
+
 Boid.prototype.update = function (i) {
     idx = pos[i];
     this.position = createVector(trajectories[i + 1][idx][0], trajectories[i + 1][idx][1]);
@@ -79,9 +119,11 @@ Boid.prototype.update = function (i) {
 }
 
 // Draw boid as a circle
-Boid.prototype.render = function () {
+Boid.prototype.render = function (i) {
+    //g_color = groupColor(i)
+    //fill(g_color)
     fill('#222222');
-    stroke(200);
+    stroke(200);    
     ellipse(this.position.x, this.position.y, 20, 20); //displays current position of trajectory data
 }
 
