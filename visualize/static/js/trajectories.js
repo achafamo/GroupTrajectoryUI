@@ -7,7 +7,7 @@ var pos = [];
 var num_trajectories = 10;
 var new_trajectories = [];
 function preload() {
-    var url = getURL() + "/testweather/";
+    var url = getURL() + "/trajectorydata/";
     trajectories = loadJSON(url);
     len = trajectories.length;
 }
