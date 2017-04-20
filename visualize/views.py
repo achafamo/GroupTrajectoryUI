@@ -25,6 +25,12 @@ def get_trajectories(request):
     #TODO: Right now, we are only returning a hard coded trajectory data. We should expand this to allow users to choose
     #       from a list of trajectory data
 
+def update_trajectories(request):
+    '''
+    takes newly posted trajectory data and runs grouping algorithm. Should return/update trajectories and new group_info
+    '''
+    #TODO: this is where the interface with the haskell code should happen 
+    pass
 def get_file(filename):
     '''
     returns a dictionary of each trajectories coordinates for every time stamp from the netlogo input format data 
@@ -48,3 +54,4 @@ def get_file(filename):
             t+=1
             idx+=1
     return d
+
