@@ -17,7 +17,7 @@ function preload() {
     //have the same color or something 
                     
     trajectories = loadJSON(url); //adding trajectory data into dictionary 
-    group_info = loadJSON(group_url);
+    //group_info = loadJSON(group_url);
     // group_info should be a list of lists corresponding to each time step. Each list at time t should contain  
     // a list of the groups at the current time and each group is a list containing the trajectory ids of the grouped trajectories
     
@@ -51,12 +51,16 @@ function reset() {
     }
     loop();
 }
+
+/***
 function initializeColors(){
     var ln = group_info.length;//we want the maximum number of groups that can occur at any given time.  
     for(var i; i< ln; i++){
         //colors[i] = random unique color
     }
 }
+***/
+
 function groupColor(i){
     /***
     takes a given boid and updates its color to correspond to the group that it currently belongs to 
@@ -111,21 +115,7 @@ function groupNewTrajectory(){
        type: "POST",
        dataType: "json",
        data: trajectories
-       statusCode: {
-         200: function (your_Response_Data) {
-            // YOUR SERVER'S RESPONSE
-            // you can act on your server's 
-            // response if there will be any
-            // eg. you can send back information to update UI. 
-          },
-          // ... handle errors if required
-          404: function () {
-             // what to do on 404 etc.
-          }
-       },
-       complete: function (jqXHR, textStatus) {
-          // Things to do after everything is completed
-       }
+     
     });
     //reset to make added trajectory display?
 
@@ -136,7 +126,7 @@ function Boid(x, y) {
     this.position = createVector(x, y);
     this.r = 3.0;
     this.maxspeed = 3;    // Maximum speed
-    this.color = ''
+    this.color = '';
     
 }
 
@@ -146,7 +136,7 @@ Boid.prototype.run = function (boids, i) {
        
     }    
     this.update(i);    
-    this.render(i);    
+    this.render();    
 }
 
 
@@ -159,7 +149,7 @@ Boid.prototype.update = function (i) {
 }
 
 // Draw boid as a circle
-Boid.prototype.render = function (i) {
+Boid.prototype.render = function () {
     //g_color = groupColor(i)
     //fill(g_color)
     fill('#222222');
