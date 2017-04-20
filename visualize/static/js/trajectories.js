@@ -81,15 +81,55 @@ function keyPressed() {
     reset();       
 }
 
-function mouseDragged() {
-    //TODO: Right now, when the mouse is dragged the path is only displayed and not recorded. We need to 
-    //save the values of mouseX and mouseY in intervals that correspond to the existing trajectory data
-    //so that we can add it and display the added trajectory in the next iteration
+function mouseDragged() {    
     loop();    
     ellipse(mouseX, mouseY, 20, 20); // displays an elipse at the given coordinate everytime the mouse is dragged
-    //noLoop();       
+    
+    //#TODO: Right now, when the mouse is dragged the path is only displayed and not recorded. We need to 
+    //save the values of mouseX and mouseY in intervals that correspond to the existing trajectory data
+    //so that we can add it and display the added trajectory in the next iteration   
+    
+    //#TODO: figure out how to capture T(number of time steps) equally spaced coordinates of the mouse dragged path to record
+    //the path of the added trajectory in p5.js
+    
+    //**this should not be done in this function
+    //new_trajectory = 
+    //trajectories.push(new_trajectory)
+    //update num_trajectories so new trajectory can be displayed     
+    //need to clarify when and how users can drag their mouse to add new trajectories 
+    //(while trajectories are being displayed? After the time steps are over?)
+    //alert groupNewTrajectory() so it can send the trajectories (including the new one) to the django server so
+    //we can run the grouping algorithm with our new data and return new grouping_info
+
 }
 
+function groupNewTrajectory(){
+    noLoop(); //pause visual
+    
+    $.ajax({
+       url:  updatetrajectorydata,
+       type: "POST",
+       dataType: "json",
+       data: trajectories
+       statusCode: {
+         200: function (your_Response_Data) {
+            // YOUR SERVER'S RESPONSE
+            // you can act on your server's 
+            // response if there will be any
+            // eg. you can send back information to update UI. 
+          },
+          // ... handle errors if required
+          404: function () {
+             // what to do on 404 etc.
+          }
+       },
+       complete: function (jqXHR, textStatus) {
+          // Things to do after everything is completed
+       }
+    });
+    //reset to make added trajectory display?
+
+}
 
 // Boid class
 function Boid(x, y) {    
