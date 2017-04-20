@@ -22,7 +22,7 @@ Clone this repository.
     
     git clone https://github.com/achafamo/GroupTrajectoryUI.git
 
-Install requirements:
+Change into our repository and install required dependencies such as the django package using:
 
     pip install -r requirements.txt
 
