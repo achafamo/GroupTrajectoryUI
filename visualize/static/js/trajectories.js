@@ -11,7 +11,7 @@ var colors = [];
 
 function preload() {
     var url = getURL() + "/trajectorydata/"; // loads trajectory data from Django backend server
-    var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
+    //var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
                                                  //belong to which groups(if any) at each time step
     //TODO: need to incorporate the grouping information to the visualization so that all trajectories within a given group
     //have the same color or something 
@@ -104,7 +104,7 @@ function mouseDragged() {
 }
 
 function groupNewTrajectory(){
-    noLoop(); //pause visual
+    noLoop(); //pause visual?
     
     $.ajax({
        url:  updatetrajectorydata,
