@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.conf import settings 
 import os
-
+import random
 
 import collections
 def home(request):
@@ -25,6 +25,17 @@ def get_trajectories(request):
     #TODO: Right now, we are only returning a hard coded trajectory data. We should expand this to allow users to choose
     #       from a list of trajectory data
 
+def get_groupings(request):
+    '''
+	
+    '''
+    #sort groupings file based on start and end time
+    #pass modified file to read_groupings, change this to a script that can take in files
+
+    sorted_file = "final.txt"	
+    groupings = read_groupings(sorted_file)
+    return JsoneResponse(groupings)
+    
 def update_trajectories(request):
     '''
     takes newly posted trajectory data and runs grouping algorithm. Should return/update trajectories and new group_info
@@ -54,4 +65,21 @@ def get_file(filename):
             t+=1
             idx+=1
     return d
+def read_grouping(sorted_file):
+    d = collections.defaultdict(dict)
+    with open(os.path.join(settings.BASE_DIR, sorted_file), 'r') as f:
+        lines = [line for line in f]
+        n = len(lines) #number of groups
+	for i in range(n):
+            num, start, end = line.split(',,')[0].split(',')
+            group = line.split(',,')[1].split(',')	    
+	    r = lambda: random.randint(0,255)
+	    clr = ('#%02X%02X%02X' % (r(),r(),r()))	    
+		for t in range(math.floor(start), math.floor(end)):
+                    for traj in group:
+			d[traj][t] = clr
+    return d
+
+		
+	
 

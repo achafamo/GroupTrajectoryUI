@@ -11,12 +11,13 @@ var colors = [];
 
 function preload() {
     var url = getURL() + "/trajectorydata/"; // loads trajectory data from Django backend server
-    //var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
+    var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
                                                  //belong to which groups(if any) at each time step
     //TODO: need to incorporate the grouping information to the visualization so that all trajectories within a given group
     //have the same color or something 
                     
     trajectories = loadJSON(url); //adding trajectory data into dictionary 
+    groupings = loadJSON(group_url);
     //group_info = loadJSON(group_url);
     // group_info should be a list of lists corresponding to each time step. Each list at time t should contain  
     // a list of the groups at the current time and each group is a list containing the trajectory ids of the grouped trajectories
@@ -66,19 +67,9 @@ function groupColor(i){
     takes a given boid and updates its color to correspond to the group that it currently belongs to 
     ***/
     var time_step = pos[i];    
-    var curr_groups = group_info[time_step];
-    for(var j = 0; j < curr_groups.length; j++){
-        var group =  curr_groups[j];
-        if(group.indexOf(i)!=-1){
-            if(boids[i].color!= colors[j]){
-                boids[i].color = colors[j];
-            }
-        }
+    return groupings[i][time_step]
         //handle case when trajectory left group(not found in any group, set default for solo trajectories
         //TODO: how to handle the consistency of group order 
-    } 
-    return boids[i].color
-
 }
 
 function keyPressed() {
@@ -150,9 +141,9 @@ Boid.prototype.update = function (i) {
 
 // Draw boid as a circle
 Boid.prototype.render = function () {
-    //g_color = groupColor(i)
-    //fill(g_color)
-    fill('#222222');
+    g_color = groupColor(i)
+    fill(g_color)
+    //fill('#222222');
     stroke(200);    
     ellipse(this.position.x, this.position.y, 20, 20); //displays current position of trajectory data
 }
