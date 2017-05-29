@@ -4,7 +4,7 @@ var len = 0;
 var new_idx = 0;
 var new_tr = 1;
 var pos = [];
-var num_trajectories = 10; //can change this number to see more trajectories 
+var num_trajectories = 150; //can change this number to see more trajectories 
 var new_trajectories = [];
 var grouping_info = [];
 var colors = [];
@@ -117,7 +117,7 @@ function Boid(x, y) {
     this.position = createVector(x, y);
     this.r = 3.0;
     this.maxspeed = 3;    // Maximum speed
-    this.color = '';
+    this.color = '#222222';
     
 }
 
@@ -137,12 +137,16 @@ Boid.prototype.update = function (i) {
     idx = pos[i];
     this.position = createVector(trajectories[i + 1][idx][0], trajectories[i + 1][idx][1]);
     pos[i] = pos[i]+1
+	this.color = groupings[i+1][idx] //this gets the current color of our trajectory data at this particular time due to the grouping it is in
+	//console.log(this.color)
+	
 }
 
 // Draw boid as a circle
 Boid.prototype.render = function () {
-    g_color = groupColor(i)
-    fill(g_color)
+    //g_color = groupColor(i)
+	if (this.color == null) {this.color = '#222222';} //if trajectories not in any group, assign black
+	fill(this.color);
     //fill('#222222');
     stroke(200);    
     ellipse(this.position.x, this.position.y, 20, 20); //displays current position of trajectory data

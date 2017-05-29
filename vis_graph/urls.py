@@ -3,7 +3,7 @@ Definition of urls for Compgeo_project.
 """
 
 from django.conf.urls import include, url
-from visualize.views import home, get_trajectories, update_trajectories, get_groupings
+from visualize.views import home, get_trajectories, update_trajectories, get_groupings, test
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'trajectorydata/$', get_trajectories), 
     url(r'updatetrajectorydata/$', update_trajectories),
     url(r'groupinginfo/$', get_groupings),
+    url(r'test/$', test),
     # this redirects urls ending with 'trajectorydata' to be handled by the get_trajectories function from views.py
    
     
