@@ -14,7 +14,7 @@ function preload() {
     var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
                                                  //belong to which groups(if any) at each time step
     //TODO: need to incorporate the grouping information to the visualization so that all trajectories within a given group
-    //have the same color or something 
+    //have the same color or something -> DONE
                     
     trajectories = loadJSON(url); //adding trajectory data into dictionary 
     groupings = loadJSON(group_url);
@@ -23,6 +23,7 @@ function preload() {
     // a list of the groups at the current time and each group is a list containing the trajectory ids of the grouped trajectories
     
     len = trajectories.length;
+		console.log(len);
 }
 
 function setup() {
@@ -37,7 +38,7 @@ function setup() {
 }
 
 function draw() {    
-    background('#BCCE98');
+    background('#DCDCDC');
     for (var i = 0; i < boids.length; i++) {
         boids[i].run(boids, i);
     }
@@ -75,7 +76,9 @@ function groupColor(i){
 function keyPressed() {
     reset();       
 }
-
+function mouseClicked() {
+		noLoop();
+}
 function mouseDragged() {    
     loop();    
     ellipse(mouseX, mouseY, 20, 20); // displays an elipse at the given coordinate everytime the mouse is dragged

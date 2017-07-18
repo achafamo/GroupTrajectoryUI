@@ -1,0 +1,4 @@
+
+{% load staticfiles %}
+<head>Django</head>
+<html></html>

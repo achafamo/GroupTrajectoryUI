@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- Template by html.am -->
+{% load staticfiles %}
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>2 Column Layout &mdash; Left Menu with Header &amp; Footer</title>
+		
+		
+		<script src="{%static 'js/p5.js' %}"></script>
+    <script src="{%static 'js/trajectories.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	
+	</head>
+	
+	<body class="inner">
+	  <div id="main">
+	    <div id="header">
+	      <!--contains the top menu bar -->
+	    </div>
+	    <div id="container">
+	      <div class="content">
+		<!--contains the main area -->
+	      </div>
+	      <div class="side-bar">
+		<!--contains the side nav bar -->
+	      </div>
+	    </div>
+	    <div id="footer">
+	      <!--contains the footer -->
+	    </div>
+	  </div>
+	</body>
+</html>

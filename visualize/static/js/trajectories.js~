@@ -1,0 +1,165 @@
+var boids = [];
+var idx = 0;
+var len = 0;
+var new_idx = 0;
+var new_tr = 1;
+var pos = [];
+var num_trajectories = 150; //can change this number to see more trajectories 
+var new_trajectories = [];
+var grouping_info = [];
+var colors = [];
+
+function preload() {
+    var url = getURL() + "/trajectorydata/"; // loads trajectory data from Django backend server
+    var group_url = getURL() + "/groupinginfo/"; //loads information about grouping. contains info about which trajectories 
+                                                 //belong to which groups(if any) at each time step
+    //TODO: need to incorporate the grouping information to the visualization so that all trajectories within a given group
+    //have the same color or something -> DONE
+                    
+    trajectories = loadJSON(url); //adding trajectory data into dictionary 
+    groupings = loadJSON(group_url);
+    //group_info = loadJSON(group_url);
+    // group_info should be a list of lists corresponding to each time step. Each list at time t should contain  
+    // a list of the groups at the current time and each group is a list containing the trajectory ids of the grouped trajectories
+    
+    len = trajectories.length;
+}
+
+function setup() {
+    var canvas = createCanvas(920, 520);
+    //TODO: maybe set the size of the canvas based on the range of the x and y coordinates?
+    canvas.parent('canvas-center');
+    frameRate(10);
+    for (var i = 0; i < num_trajectories; i++) {        
+        boids[i] = new Boid(0, 0); //boid is the data structure that we will use to represent each trajectory 
+        pos[i] = 0;
+    }
+}
+
+function draw() {    
+    background('#DCDCDC');
+    for (var i = 0; i < boids.length; i++) {
+        boids[i].run(boids, i);
+    }
+
+}
+
+function reset() {
+    for (var i = 0; i < num_trajectories; i++) {        
+        boids[i] = new Boid(0, 0); 
+        pos[i] = 0;
+        idx = 0;
+    }
+    loop();
+}
+
+/***
+function initializeColors(){
+    var ln = group_info.length;//we want the maximum number of groups that can occur at any given time.  
+    for(var i; i< ln; i++){
+        //colors[i] = random unique color
+    }
+}
+***/
+
+function groupColor(i){
+    /***
+    takes a given boid and updates its color to correspond to the group that it currently belongs to 
+    ***/
+    var time_step = pos[i];    
+    return groupings[i][time_step]
+        //handle case when trajectory left group(not found in any group, set default for solo trajectories
+        //TODO: how to handle the consistency of group order 
+}
+
+function keyPressed() {
+    reset();       
+}
+function mouseClicked() {
+		noLoop();
+}
+function mouseDragged() {    
+    loop();    
+    ellipse(mouseX, mouseY, 20, 20); // displays an elipse at the given coordinate everytime the mouse is dragged
+    
+    //#TODO: Right now, when the mouse is dragged the path is only displayed and not recorded. We need to 
+    //save the values of mouseX and mouseY in intervals that correspond to the existing trajectory data
+    //so that we can add it and display the added trajectory in the next iteration   
+    
+    //#TODO: figure out how to capture T(number of time steps) equally spaced coordinates of the mouse dragged path to record
+    //the path of the added trajectory in p5.js
+    
+    //**this should not be done in this function
+    //new_trajectory = 
+    //trajectories.push(new_trajectory)
+    //update num_trajectories so new trajectory can be displayed     
+    //need to clarify when and how users can drag their mouse to add new trajectories 
+    //(while trajectories are being displayed? After the time steps are over?)
+    //alert groupNewTrajectory() so it can send the trajectories (including the new one) to the django server so
+    //we can run the grouping algorithm with our new data and return new grouping_info
+
+}
+
+function groupNewTrajectory(){
+    noLoop(); //pause visual?
+    
+    $.ajax({
+       url:  updatetrajectorydata,
+       type: "POST",
+       dataType: "json",
+       data: trajectories
+     
+    });
+    //reset to make added trajectory display?
+
+}
+
+// Boid class
+function Boid(x, y) {    
+    this.position = createVector(x, y);
+    this.r = 3.0;
+    this.maxspeed = 3;    // Maximum speed
+    this.color = '#222222';
+    
+}
+
+Boid.prototype.run = function (boids, i) {
+    if (pos[i] == 149) {        
+        noLoop(); // if last time step, pause loop
+       
+    }    
+    this.update(i);    
+    this.render();    
+}
+
+
+// Method to update location
+
+Boid.prototype.update = function (i) {
+    idx = pos[i];
+    this.position = createVector(trajectories[i + 1][idx][0], trajectories[i + 1][idx][1]);
+    pos[i] = pos[i]+1
+	this.color = groupings[i+1][idx] //this gets the current color of our trajectory data at this particular time due to the grouping it is in
+	//console.log(this.color)
+	
+}
+
+// Draw boid as a circle
+Boid.prototype.render = function () {
+    //g_color = groupColor(i)
+	if (this.color == null) {this.color = '#222222';} //if trajectories not in any group, assign black
+	fill(this.color);
+    //fill('#222222');
+    stroke(200);    
+    ellipse(this.position.x, this.position.y, 20, 20); //displays current position of trajectory data
+}
+
+// Wraparound
+Boid.prototype.borders = function () {
+    //I am not sure what this does
+    if (this.position.x < -this.r) this.position.x = width + this.r;
+    if (this.position.y < -this.r) this.position.y = height + this.r;
+    if (this.position.x > width + this.r) this.position.x = -this.r;
+    if (this.position.y > height + this.r) this.position.y = -this.r;
+}
+

@@ -22,6 +22,18 @@ def get_file(filename):
             t+=1
             idx+=1
     return d
+def process_grouping(filename, output):
+	with open(filename, 'r') as f and open(output, 'w') as f2:
+		line_generator = [line for line in f]
+		n = int(line_generator[0].split(',')[0]) * int(line_generator[0].split(',')[1])
+		n = n+1
+		for i in range(n,2,len(line_generat0r)):
+			curr_line = line[i].split()
+			curr_line = ','.join(curr_line)
+			next_line = line[i+1].split()
+			cur_line+=",,"	
+			curr_line+=','.join(next_line)
+			f2.write(curr_line)
 
 if __name__ == "__main__":
     print (get_file("static/text/trajectories.txt"))
