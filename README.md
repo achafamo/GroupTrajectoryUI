@@ -43,3 +43,4 @@ Run the development server:
 You should see trajectories moving on the screen at root url:
 
     http://localhost:8000/
+![alt text](https://github.com/achafamo/GroupTrajectoryUI/blob/master/django.jpg)
